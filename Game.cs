@@ -16,10 +16,10 @@ namespace Three_Or_More
             {
                 foreach (var player in playerList)
                 {
-                    Console.WriteLine("Press enter to roll dice.");
-                    Console.Read();
-                    player.Update_score(GetScore(ThrowDice()));
-                    Console.WriteLine(player.PlayerName + " Score: " + player.PlayerScore);
+                    Console.WriteLine("It's " + player.PlayerName + "'s turn to throw the dice!\n\nPress enter to roll dice.");
+                    Console.ReadKey();
+                    player.Update_score(GetScore(ThrowDice(),0));
+                    Console.WriteLine(player.PlayerName + "'s Score: " + player.PlayerScore);
                     if (player.PlayerScore >= 50)
                     {
                         Console.WriteLine("Congrats, " + player + "won!");
@@ -60,7 +60,7 @@ namespace Three_Or_More
                 }
             }
             return throwOutcome;
-        }
+            }
         // this method returns a List of numbers that appear on the dice faces once the dice is thrown
         private static List<int> ThrowDice()
         {
@@ -117,7 +117,7 @@ namespace Three_Or_More
             return playerList;
         }
 
-        private static int GetScore(List<int> dieValues)
+        private static int GetScore(List<int> dieValues, int counter)
         {
             int score = 0;
             Dictionary<int,int> diceThrow = new Dictionary<int,int>(6)
@@ -133,12 +133,14 @@ namespace Three_Or_More
             {
                 diceThrow[dieValue]++;
             }
-
+            
             int maxValue = diceThrow.Values.Max();
+            Console.WriteLine("Max value is: " + maxValue);
 
             if (maxValue == 5)
             {
                 score = 12;
+                
             }
             if (maxValue == 4)
             {
@@ -150,21 +152,29 @@ namespace Three_Or_More
             }
             if (maxValue == 2)
             {
-                // gets the key of the value with the maximum 
-                int repeatedValue = 0;
-                Console.WriteLine(repeatedValue + " is repeated twice.\nPress enter to re-roll.......");
-                Console.Read();
-
-                foreach (var pair in diceThrow)
+                if (counter <= 1)
                 {
-                    if (pair.Value == 2)
-                    {
-                        repeatedValue = pair.Key;
-                    }
-                }
+                    // gets the key of the value with the maximum 
+                    int repeatedValue = 0;
 
-                List<int> newList = Reroll(repeatedValue);
-                GetScore(newList);
+                    foreach (var pair in diceThrow)
+                    {
+                        if (pair.Value == 2)
+                        {
+                            repeatedValue = pair.Key;
+                        }
+                    }
+
+                    Console.WriteLine(repeatedValue + " is repeated twice.\nPress enter to re-roll.......");
+                    Console.ReadKey();
+                    counter++;
+                    List<int> newList = Reroll(repeatedValue);
+                    GetScore(newList,counter);
+                }
+                else
+                {
+                    Console.WriteLine("Better luck next time!");
+                }
             }
             return score;
         }
