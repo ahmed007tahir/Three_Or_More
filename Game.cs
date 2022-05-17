@@ -140,19 +140,18 @@ namespace Three_Or_More
             if (maxValue == 5)
             {
                 score = 12;
-                
             }
-            if (maxValue == 4)
+            else if (maxValue == 4)
             {
                 score = 6;
             }
-            if (maxValue == 3)
+            else if (maxValue == 3)
             {
                 score = 3;
             }
-            if (maxValue == 2)
+            else if (maxValue == 2)
             {
-                if (counter <= 1)
+                if (counter < 1)
                 {
                     // gets the key of the value with the maximum 
                     int repeatedValue = 0;
@@ -168,13 +167,14 @@ namespace Three_Or_More
                     Console.WriteLine(repeatedValue + " is repeated twice.\nPress enter to re-roll.......");
                     Console.ReadKey();
                     counter++;
+
                     List<int> newList = Reroll(repeatedValue);
                     GetScore(newList,counter);
                 }
-                else
-                {
-                    Console.WriteLine("Better luck next time!");
-                }
+            }
+            else
+            {
+                Console.WriteLine("Better luck next time!");
             }
             return score;
         }
