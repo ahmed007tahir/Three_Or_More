@@ -18,7 +18,7 @@ namespace Three_Or_More
                 {
                     Console.WriteLine("It's " + player.PlayerName + "'s turn to throw the dice!\n\nPress enter to roll dice.");
                     Console.ReadKey();
-                    player.Update_score(GetScore(ThrowDice(),0));
+                    GetScore(ThrowDice(),0,player);
                     Console.WriteLine(player.PlayerName + "'s Score: " + player.PlayerScore);
                     if (player.PlayerScore >= 50)
                     {
@@ -117,7 +117,7 @@ namespace Three_Or_More
             return playerList;
         }
 
-        private static int GetScore(List<int> dieValues, int counter)
+        private static void GetScore(List<int> dieValues, int counter, Player player)
         {
             int score = 0;
             Dictionary<int,int> diceThrow = new Dictionary<int,int>(6)
@@ -139,15 +139,15 @@ namespace Three_Or_More
 
             if (maxValue == 5)
             {
-                score = 12;
+                player.Update_score(12);
             }
             else if (maxValue == 4)
             {
-                score = 6;
+                player.Update_score(6);
             }
             else if (maxValue == 3)
             {
-                score = 3;
+                player.Update_score(3);
             }
             else if (maxValue == 2)
             {
@@ -169,14 +169,13 @@ namespace Three_Or_More
                     counter++;
 
                     List<int> newList = Reroll(repeatedValue);
-                    GetScore(newList,counter);
+                    GetScore(newList,counter,player);
                 }
             }
             else
             {
                 Console.WriteLine("Better luck next time!");
             }
-            return score;
         }
     }
 }
