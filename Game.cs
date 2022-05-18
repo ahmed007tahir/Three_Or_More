@@ -7,29 +7,53 @@ using System.Threading.Tasks;
 
 namespace Three_Or_More
 {
+
+    // this class contains the code for the game 'Three or More'
     internal class Game
     {
-        public static void Play()
+        // this method returns a list of Player objects with each Player object having it's name property set by the user
+        private static List<Player> PlayerList()
         {
-            List<Player> playerList = PlayerList();
+            // initializing the variable to hold the number of number of Player objects to be created
+            int numberOfPlayers = 0;
+
+            // initializing the variable to hold the Player objects to be created
+            List<Player> playerList = new List<Player>();
+
+            // this loop handles exceptions while getting user input
             while (true)
             {
-                foreach (var player in playerList)
+                // asking the user to enter the number of players playing, which will determine the number of Player objects to be created
+                Console.Write("Please pick the number of players: ");
+
+                try
                 {
-                    Console.WriteLine("It's " + player.PlayerName + "'s turn to throw the dice!\n\nPress enter to roll dice.");
-                    Console.ReadKey();
-                    GetScore(ThrowDice(),0,player);
-                    Console.WriteLine(player.PlayerName + "'s Score: " + player.PlayerScore);
-                    if (player.PlayerScore >= 50)
-                    {
-                        Console.WriteLine("Congrats, " + player + "won!");
-                        break;
-                    }
+                    numberOfPlayers = Int32.Parse(Console.ReadLine());
+                    if (numberOfPlayers == 0) Console.WriteLine("Invalid Input!");
+                    else break;
+                }
+                catch
+                {
+                    Console.WriteLine("Invalid Input!");
                 }
             }
+
+            // this for loop iterates through the list of player objects, setting the playerName property of each dice
+            for (int i = 0; i < numberOfPlayers; i++)
+            {
+                int playerID = i + 1;
+                Console.Write("Please enter the name of player " + playerID + ": ");
+                string playerName = Console.ReadLine();
+
+                playerList.Add(new Player(playerID, playerName, 0));
+            }
+
+            // the function returns a list of object Player with each Player object having it's playerID property set
+            return playerList;
         }
 
-        private static List<int> Reroll(int repeatedTwice)
+        
+        private static List<int> ThrowDice(int repeatedTwice)
         {
             List<int> throwOutcome = new List<int>();
 
@@ -61,6 +85,7 @@ namespace Three_Or_More
             }
             return throwOutcome;
             }
+        
         // this method returns a List of numbers that appear on the dice faces once the dice is thrown
         private static List<int> ThrowDice()
         {
@@ -85,38 +110,7 @@ namespace Three_Or_More
             return throwOutcome;
         }
         
-        private static List<Player> PlayerList()
-        {
-            int numberOfPlayers = 0;
-            List<Player> playerList = new List<Player>();
-
-            while (true)
-            {
-                Console.Write("Please pick the number of players: ");
-                try
-                {
-                    numberOfPlayers = Int32.Parse(Console.ReadLine());
-                    break;
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    throw;
-                }
-            }
-
-            for (int i = 0; i < numberOfPlayers; i++)
-            {
-                int playerID = i + 1;
-                Console.Write("Please enter the name of player " + playerID + ": ");
-                string playerName = Console.ReadLine();
-
-                playerList.Add(new Player(playerID, playerName, 0));
-            }
-
-            return playerList;
-        }
-
+        
         private static void GetScore(List<int> dieValues, int counter, Player player)
         {
             int score = 0;
@@ -135,21 +129,21 @@ namespace Three_Or_More
             }
             
             int maxValue = diceThrow.Values.Max();
-            Console.WriteLine("Max value is: " + maxValue);
 
             if (maxValue == 5)
             {
+                Console.Write("Jackpot!");
                 player.Update_score(12);
             }
-            else if (maxValue == 4)
+            if (maxValue == 4)
             {
                 player.Update_score(6);
             }
-            else if (maxValue == 3)
+            if (maxValue == 3)
             {
                 player.Update_score(3);
             }
-            else if (maxValue == 2)
+            if (maxValue == 2)
             {
                 if (counter < 1)
                 {
@@ -164,18 +158,50 @@ namespace Three_Or_More
                         }
                     }
 
-                    Console.WriteLine(repeatedValue + " is repeated twice.\nPress enter to re-roll.......");
+                    Console.WriteLine(repeatedValue + " is repeated twice.\nPress enter to roll the dice again!\n");
                     Console.ReadKey();
                     counter++;
 
-                    List<int> newList = Reroll(repeatedValue);
+                    List<int> newList = ThrowDice(repeatedValue);
                     GetScore(newList,counter,player);
                 }
+                else
+                {
+                    Console.WriteLine("Better luck next time!");
+                }
             }
-            else
+            
+        }
+
+        // thus function is called at the beginning of the program 
+        public void Play()
+        {
+            // a list of Player objects is created using the 'PlayerList' method
+            List<Player> playerList = PlayerList();
+            int highest_score = 0;
+
+            while (highest_score < 50)
             {
-                Console.WriteLine("Better luck next time!");
+                foreach (var player in playerList)
+                {
+                    // add some lining here like ---------------------------------------------------------------------
+                    Console.WriteLine("\nIt's " + player.PlayerName + "'s turn to throw the dice!\n\nPress enter to roll dice.");
+                    Console.ReadKey();
+                    GetScore(ThrowDice(), 0, player);
+                    Console.WriteLine(player.PlayerName + "'s Score: " + player.PlayerScore);
+                    if (player.PlayerScore >= 50)
+                    {
+                        Console.WriteLine("Congrats, " + player + "won!");
+                    }
+
+                    if (highest_score < player.PlayerScore)
+                    {
+                        highest_score = player.PlayerScore;
+                    }
+                }
             }
+            // main menu return
+            Console.WriteLine("game finished!");
         }
     }
 }
