@@ -8,17 +8,20 @@ namespace Three_Or_More
 {
     internal class Player
     {
-        private int _playerId;
-        private string _playerName;
-        private int _playerScore;
+        protected int _playerID;
+        protected string _playerName;
+        protected int _playerScore;
+        protected string _playerType;
 
-        public int PlayerId { get { return _playerId; } set { _playerId = value; } }
+        public int PlayerID { get { return _playerID; } set { _playerID = value; } }
         public string PlayerName { get { return _playerName; } set { _playerName = value; } }
         public int PlayerScore { get { return _playerScore; } set { _playerScore = value; } }
 
+        public Player(){}
+
         public Player(int id, string name, int score)
         {
-            PlayerId = id;
+            PlayerID = id;
             PlayerName = name;
             PlayerScore = score;
         }

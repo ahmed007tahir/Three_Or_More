@@ -8,9 +8,8 @@ namespace Three_Or_More
 {
     internal class DrawDice : Dice
     {
-        public static Dictionary<int, string> printDieFace()
+        public static string printDieFace(int number)
         {
-
             Dictionary<int, string> DieFace = new Dictionary<int, string>()
             {
                 {
@@ -61,9 +60,9 @@ namespace Three_Or_More
     │ 0  0  0 │
     └─────────┘"
                 },
-
             };
-            return DieFace;
+
+            return DieFace[number];
         }
     }
 }
