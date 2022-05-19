@@ -63,6 +63,7 @@ namespace Three_Or_More
                 }
             }
             Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\n");
             return throwOutcome;
         }
 
@@ -87,17 +88,17 @@ namespace Three_Or_More
 
             if (maxValue == 5)
             {
-                Console.Write("\nJackpot!!!\nYou scored 12 points this round!");
+                Console.Write("\nJackpot!!!\nYou scored 12 points this round!\n");
                 player.Update_score(12);
             }
             if (maxValue == 4)
             {
-                Console.Write("\nYou scored 6 points this round!");
+                Console.Write("\nYou scored 6 points this round!\n");
                 player.Update_score(6);
             }
             if (maxValue == 3)
             {
-                Console.Write("\nYou scored 3 points this round!");
+                Console.Write("\nYou scored 3 points this round!\n");
                 player.Update_score(3);
             }
             if (maxValue == 2)
@@ -115,8 +116,12 @@ namespace Three_Or_More
                         }
                     }
 
-                    Console.WriteLine(repeatedValue + " is repeated twice.\nPress enter to roll the dice again!\n");
-                    Console.ReadKey();
+                    Console.WriteLine(repeatedValue + " is repeated twice.\n");
+                    if (player.IsHuman)
+                    {
+                        Console.WriteLine("Press enter to roll the dice again!\n");
+                        Console.ReadKey();
+                    }
                     counter++;
 
                     List<int> newList = ThrowDice(true,repeatedValue);
@@ -125,47 +130,43 @@ namespace Three_Or_More
                 else
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("You scored no points this round :(\nBetter luck next time!");
+                    Console.WriteLine("You scored no points this round :(\nBetter luck next time!\n");
                     Console.ForegroundColor = ConsoleColor.White;
 
                 }
             }
-            
+            if (maxValue == 1)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("You scored no points this round :(\nBetter luck next time!\n");
+                Console.ForegroundColor = ConsoleColor.White;
+
+            }
+
         }
 
         // this function is called at the beginning of the program 
         // this method take in a list of Player objects and acts as an initiation for the game
-        public void Play(List<ComputerPlayer> computerPlayers, List<HumanPlayer> humanPlayers)
+        public void Play(List<Player> players)
         {
             int highest_score = 0;
-
             
             while (highest_score < 50)
             {
-                foreach (var player in humanPlayers)
+                foreach (var player in players)
                 {
                     Console.WriteLine("-------------------------------------------\n");
-                    Console.WriteLine("\nIt's " + player.PlayerName + "'s turn to throw the dice!\n\nPress enter to roll dice.");
-                    Console.ReadKey();
-                    GetScore(ThrowDice(), 0, player);
-                    Console.WriteLine(player.PlayerName + "'s Score: " + player.PlayerScore);
-                    if (player.PlayerScore >= 50)
+                    if (player.IsHuman)
                     {
-                        Console.WriteLine("Congrats, " + player.PlayerName + "won!");
+                        Console.WriteLine("\nIt's " + player.PlayerName + "'s turn to throw the dice!\n\nPress enter to roll dice.");
+                        Console.ReadKey();
                     }
-
-                    if (highest_score < player.PlayerScore)
+                    else
                     {
-                        highest_score = player.PlayerScore;
+                        Console.WriteLine("\nIt's the COMPUTER player " + player.PlayerName + "'s turn to throw the dice!");
                     }
-                }
-                foreach (var player in computerPlayers)
-                {
-                    // add some lining here like ---------------------------------------------------------------------
-                    Console.WriteLine("\nIt's " + player.PlayerName + "'s turn to throw the dice!\n\nPress enter to roll dice.");
-                    Console.ReadKey();
                     GetScore(ThrowDice(), 0, player);
-                    Console.WriteLine(player.PlayerName + "'s Score: " + player.PlayerScore);
+                    Console.WriteLine(player.PlayerName + "'s Total Score is : " + player.PlayerScore);
                     if (player.PlayerScore >= 50)
                     {
                         Console.WriteLine("Congrats, " + player.PlayerName + "won!");

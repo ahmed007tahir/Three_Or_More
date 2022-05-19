@@ -40,13 +40,13 @@ Your Response: ");
 █░▀█ ██▄ ▀▄▀▄▀   █▄█ █▀█ █░▀░█ ██▄");
         // if 'a' is chosen...
         // a new list of player objects is created by the main method using the CreatePlayerList().
-        (List<ComputerPlayer> computerPlayers, List<HumanPlayer> humanPlayers) = CreatePlayerList();
+        List<Player> players = CreatePlayerList();
         
         // the main method will create a new game object called 'newGame'.
         Game newGame = new Game();
         // the 'Play()' method of the newly created game object is called &
         // the list of Player objects is then fed into the Play() method of the game object.
-        newGame.Play(computerPlayers,humanPlayers);
+        newGame.Play(players);
     }
     else if (userResponse == "b")
     {
@@ -62,15 +62,14 @@ Your Response: ");
 }
 
 // this method returns a list of Player objects with each Player object having it's name property set by the user
-(List<ComputerPlayer>, List<HumanPlayer>) CreatePlayerList()
+List<Player> CreatePlayerList()
 {
     // initializing the variable to hold the number of number of Player objects to be created
     int numberOfHumanPlayers = 0;
     int numberOfComputerPlayers = 0;
 
     // initializing the variable to hold the Player objects to be created
-    List<HumanPlayer> HumanPlayerList = new List<HumanPlayer>();
-    List<ComputerPlayer> ComputerPlayerList = new List<ComputerPlayer>();
+    List<Player> players = new List<Player>();
 
     // this loop handles exceptions while getting user input
     while (true)
@@ -92,6 +91,14 @@ Your Response: ");
         {
             Console.WriteLine("Invalid Input!");
         }
+    }
+    for (int i = 0; i < numberOfHumanPlayers; i++)
+    {
+        int playerID = i + 1;
+        Console.Write("Please enter the name of HUMAN player " + playerID + ": ");
+        string playerName = Console.ReadLine();
+
+        players.Add(new HumanPlayer(playerID, playerName, 0));
     }
     while (true)
     {
@@ -116,20 +123,11 @@ Your Response: ");
         Console.Write("Please enter the name of  COMPUTER player " + playerID + ": ");
         string playerName = Console.ReadLine();
 
-        ComputerPlayerList.Add(new ComputerPlayer(playerID, playerName, 0));
+        players.Add(new ComputerPlayer(playerID, playerName, 0));
     }
-
-    for (int i = 0; i < numberOfHumanPlayers; i++)
-    {
-        int playerID = i + 1;
-        Console.Write("Please enter the name of HUMAN player " + playerID + ": ");
-        string playerName = Console.ReadLine();
-
-        HumanPlayerList.Add(new HumanPlayer(playerID, playerName, 0));
-    }
-
+    
     // the function returns a list of object Player with each Player object having it's playerID property set
-    return (ComputerPlayerList,HumanPlayerList);
+    return players;
 }
 
 

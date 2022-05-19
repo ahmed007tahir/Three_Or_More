@@ -10,10 +10,11 @@ namespace Three_Or_More
     {
         public ComputerPlayer(int id, string name, int score)
         {
-            _playerID = id;
-            _playerName = name;
-            _playerType = "Computer";
+            PlayerID = id;
+            PlayerName = name;
             PlayerScore = score;
+            IsHuman = false;
+
         }
     }
 }

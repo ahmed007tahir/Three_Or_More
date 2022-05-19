@@ -10,10 +10,10 @@ namespace Three_Or_More
     {
         public HumanPlayer(int id, string name, int score)
         {
-            _playerID = id;
-            _playerName = name;
-            _playerType = "Human";
+            PlayerID = id;
+            PlayerName = name;
             PlayerScore = score;
+            IsHuman = true;
         }
     }
 }
